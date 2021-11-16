@@ -1,0 +1,22 @@
+{
+  "name": "steamproject",
+  "version": "1.0.0",
+  "description": "Compare games owned with your friend's games owned and provide list of most common game.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Steam",
+    "friendlist",
+    "games"
+  ],
+  "author": "Cole Tretbar",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.6"
+  }
+}
