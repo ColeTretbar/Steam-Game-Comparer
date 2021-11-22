@@ -84,23 +84,45 @@ async function addSteamId(){
         x.name.localeCompare(y.name));
 
     // A loop for displaying all of the results into the console 
-    console.log("You have " + (finalArray[0].occurrences - 1) + " friend(s) online to play these game(s):");
-    count = 2;
-    for(k = 0; k < finalArray.length; k++){
-        b = k + 1;
-        if(finalArray[k].where[0] == 0){
-            if(finalArray[k].occurrences > 1){
-                if(finalArray[k].occurrences == finalArray[b].occurrences){
-                    console.log("       " + finalArray[k].name);
-                } else {
-                    console.log("       " + finalArray[k].name);
-                    if((finalArray[b].occurrences - 1) > 0){
-                    console.log("You have " + (finalArray[b].occurrences - 1) + " friend(s) online to play these game(s):");
-                    ++count;
-                    }
-                }
-            }    
+    // console.log("You have " + (finalArray[0].occurrences - 1) + " friend(s) online to play these game(s):");
+    // count = 2;
+    // for(k = 0; k < finalArray.length; k++){
+    //     b = k + 1;
+    //     if(finalArray[k].where[0] == 0){
+    //         if(finalArray[k].occurrences > 1){
+    //             if(finalArray[k].occurrences == finalArray[b].occurrences){
+    //                 console.log("       " + finalArray[k].name);
+    //             } else {
+    //                 console.log("       " + finalArray[k].name);
+    //                 if((finalArray[b].occurrences - 1) > 0){
+    //                 console.log("You have " + (finalArray[b].occurrences - 1) + " friend(s) online to play these game(s):");
+    //                 ++count;
+    //                 }
+    //             }
+    //         }    
+    //     }
+    // }
+
+    for(p = 0; p < 25 ; p++){
+        var logoAppid = finalArray[p].appid;
+        var logoUrl = finalArray[p].img_logo_url;
+        var img = document.createElement("img");
+        img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
+        var src = document.getElementById("steamResults");
+        
+        var friendText = new Array();
+
+        for(z = 1; z < finalArray[p].where.length; z++){ 
+            friendText.push(notPrivateList[finalArray[p].where[z]].friendname);
         }
+
+        friendText.sort();
+
+        var resultPara = document.createElement("p");
+        var resultName = document.createTextNode("(" + (finalArray[p].occurrences - 1)+ ") " + friendText.join(", ") + ".");
+        resultPara.insertAdjacentElement("afterbegin", img);
+        resultPara.appendChild(resultName);
+        src.appendChild(resultPara);
     }
 
 
