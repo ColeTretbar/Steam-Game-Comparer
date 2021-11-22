@@ -103,18 +103,23 @@ async function addSteamId(){
     //     }
     // }
 
-    for(p = 0; p < 10 ; p++){
+    for(p = 0; p < 25 ; p++){
         var logoAppid = finalArray[p].appid;
         var logoUrl = finalArray[p].img_logo_url;
         var img = document.createElement("img");
         img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
         var src = document.getElementById("steamResults");
-        var friendText = "";
+        
+        var friendText = new Array();
+
         for(z = 1; z < finalArray[p].where.length; z++){ 
-            friendText = friendText + notPrivateList[finalArray[p].where[z]].friendname + ", ";
+            friendText.push(notPrivateList[finalArray[p].where[z]].friendname);
         }
+
+        friendText.sort();
+
         var resultPara = document.createElement("p");
-        var resultName = document.createTextNode(friendText);
+        var resultName = document.createTextNode("(" + (finalArray[p].occurrences - 1)+ ") " + friendText.join(", ") + ".");
         resultPara.insertAdjacentElement("afterbegin", img);
         resultPara.appendChild(resultName);
         src.appendChild(resultPara);
