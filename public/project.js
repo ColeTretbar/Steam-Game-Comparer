@@ -37,7 +37,7 @@ async function addSteamId(){
     for(x = 0; x < onlineData.response.players.length; x++){
         if(onlineData.response.players[x].personastate == 1){
             onlineStatus.push(onlineData.response.players[x].steamid);
-            onlineNameId.push({friendid: onlineData.response.players[x].steamid, friendname: onlineData.response.players[x].personaname});
+            onlineNameId.push({friendid: onlineData.response.players[x].steamid, friendname: onlineData.response.players[x].personaname, avatar: onlineData.response.players[x].avatarmedium});
         }
     }
 
@@ -54,8 +54,6 @@ async function addSteamId(){
             // Adding these new games lists to the original games list to make a single array of all responses
             combinedArray.push(friendGamesData.response.games);
             notPrivateList.push(onlineNameId[y]);
-
-
         };
     }
 
@@ -103,48 +101,83 @@ async function addSteamId(){
     //     }
     // }
 
-    for(p = 0; p < 25 ; p++){
-        var logoAppid = finalArray[p].appid;
-        var logoUrl = finalArray[p].img_logo_url;
-        var img = document.createElement("img");
-        img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
-        var src = document.getElementById("steamResults");
-        
-        var friendText = new Array();
+    for(ii = 1; ii < notPrivateList.length ; ii++){
+        var tablesrc = document.getElementById("onlineTableRow");
+        var profilepic = document.createElement("img");
+        profilepic.src = notPrivateList[ii].avatar;
 
-        for(z = 1; z < finalArray[p].where.length; z++){ 
-            friendText.push(notPrivateList[finalArray[p].where[z]].friendname);
-        }
-
-        friendText.sort();
-
-        var resultPara = document.createElement("p");
-        var resultName = document.createTextNode("(" + (finalArray[p].occurrences - 1)+ ") " + friendText.join(", ") + ".");
-        resultPara.insertAdjacentElement("afterbegin", img);
-        resultPara.appendChild(resultName);
-        src.appendChild(resultPara);
+        var friendCell = document.createElement("td");
+        friendCell.classList.add("included");
+        friendCell.setAttribute("id", ii);
+        var friendCellName = document.createTextNode(notPrivateList[ii].friendname);
+        friendCell.insertAdjacentElement("afterbegin", profilepic);
+        friendCell.appendChild(friendCellName);
+        tablesrc.appendChild(friendCell);
     }
 
+    console.log(notPrivateList.length);
 
+    // document.addEventListener('click', function(e){
+    //     if(e.target.className=="included"){
+    //         alert(e.target.);
+    //     }
+    // })
 
+function displayGameList(){
+    document.getElementById("steamResults").innerHTML = "";
+    for(p = 0; p < resultAmt ; p++){
+        if(finalArray[p].occurrences > 1){
+            var logoAppid = finalArray[p].appid;
+            var logoUrl = finalArray[p].img_logo_url;
+            var img = document.createElement("img");
+            img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
+            var src = document.getElementById("steamResults");
+        
+            var friendText = new Array();
 
+            for(z = 1; z < finalArray[p].where.length; z++){ 
+                friendText.push(notPrivateList[finalArray[p].where[z]].friendname);
+            }
 
-    //function displayResults(){
-    //     for(p = 0; p < 25; p++){
-    //         var logoAppid = finalArray[p].appid;
-    //         var logoUrl = finalArray[p].img_logo_url;
-    //         var img = document.createElement("img");
-    //         img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
-    //         var src = document.getElementById("steamResults");
-    //         var friendText = "";
-    //         for(z = 1; z < finalArray[p].where.length; z++){ 
-    //             friendText = friendText + notPrivateList[finalArray[p].where[z]].friendname + ", ";
-    //         }
-    //         var resultPara = document.createElement("p");
-    //         var resultName = document.createTextNode(friendText);
-    //         resultPara.insertAdjacentElement("afterbegin", img);
-    //         resultPara.appendChild(resultName);
-    //         src.appendChild(resultPara);
-    // }
-//}
+            friendText.sort();
+
+            var resultPara = document.createElement("p");
+            var resultName = document.createTextNode("(" + (finalArray[p].occurrences - 1)+ ") " + friendText.join(", ") + ".");
+            resultPara.insertAdjacentElement("afterbegin", img);
+            resultPara.appendChild(resultName);
+            src.appendChild(resultPara);
+        }
+    }
+}  
+  
+const tenButton = document.getElementById("TenButton");
+tenButton.addEventListener("click", function(){
+resultAmt = tenButton.value;
+displayGameList();
+});
+
+const twentyFiveButton = document.getElementById("TwentyFiveButton");
+twentyFiveButton.addEventListener("click", function(){
+resultAmt = twentyFiveButton.value;
+displayGameList();
+});
+
+const fiftyButton = document.getElementById("FiftyButton");
+fiftyButton.addEventListener("click", function(){
+resultAmt = fiftyButton.value;
+displayGameList();
+});
+
+const oneHundredButton = document.getElementById("OneHundredButton");
+oneHundredButton.addEventListener("click", function(){
+resultAmt = oneHundredButton.value;
+displayGameList();
+});
+
+const allButton = document.getElementById("AllButton");
+allButton.addEventListener("click", function(){
+resultAmt = finalArray.length;
+displayGameList();
+});
+
 }
