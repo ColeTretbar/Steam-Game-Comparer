@@ -115,8 +115,6 @@ async function addSteamId(){
         tablesrc.appendChild(friendCell);
     }
 
-    console.log(notPrivateList.length);
-
     // document.addEventListener('click', function(e){
     //     if(e.target.className=="included"){
     //         alert(e.target.);
