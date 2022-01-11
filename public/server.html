@@ -10,19 +10,30 @@
 <body>
     <h1>Steam Friends List Game Comparer</h1>
     <p>This requires your steamID64 (Dec) which can be easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>.</p>
+    <div id="SubmitLine">
     <label for="SteamID">Enter Steam ID</label><br />
-    <input type="text" id="SteamIDButton" name="SteamIDButton">
-    <button type="button" onclick="addSteamId()">Submit</button><br />
-    <button id="TenButton" value=10>10</button>
-    <button id="TwentyFiveButton" value=25>25</button>
-    <button id="FiftyButton" value=50>50</button>
-    <button id="OneHundredButton" value=100>100</button>
-    <button id="AllButton">All</button>
+        <input type="text" id="SteamIDButton" name="SteamIDButton">
+        <button type="button" onclick="addSteamId()">Submit</button>
+        <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>          
+    </div>
+    <div id="ResultSelection">
+        <button id="ResultButtons" name="TenButton" value=10>10</button>
+        <button id="ResultButtons" name="TwentyFiveButton" value=25>25</button>
+        <button id="ResultButtons" name="FiftyButton" value=50>50</button>
+        <button id="ResultButtons" name="OneHundredButton" value=100>100</button>
+        <button id="ResultButtons" name="AllButton">All</button>
+    </div>
     <div id="onlineFriends">
         <table id="onlineTable">
             <tr id="onlineTableRow">
             </tr>
         </table>
+    </div>
+    <div id="PrioritySelection">
+        <p id="PriorityList"></p>
     </div>
     <div id="steamResults" class="resultsList"></div>
     <script src='project.js'></script>    
