@@ -38,9 +38,13 @@ async function addSteamId(){
 
     orpl = onlineData.response.players.length;
 
+    includeOnline = document.getElementById("OnlineSwitch").value;
+
     // This checks for which steam ids are currently online
     for(x = 0; x < orpl; x++){
-        if(onlineData.response.players[x].personastate == 1){
+        if(includeOnline =="YES"){
+            onlineNameId.push({friendid: onlineData.response.players[x].steamid, friendname: onlineData.response.players[x].personaname, avatar: onlineData.response.players[x].avatarmedium});
+        }else if(includeOnline =="NO" && onlineData.response.players[x].personastate == 1){
             // onlineStatus.push(onlineData.response.players[x].steamid);
             onlineNameId.push({friendid: onlineData.response.players[x].steamid, friendname: onlineData.response.players[x].personaname, avatar: onlineData.response.players[x].avatarmedium});
         }
@@ -112,15 +116,14 @@ async function addSteamId(){
     //     }
     // }
 
-    document.getElementById("onlineTableRow").innerHTML = "";
+    document.getElementById("onlineTable").innerHTML = "";
 
     pl = notPrivateList.length;
 
     for(ii = 1; ii < pl; ii++){
-        var tablesrc = document.getElementById("onlineTableRow");
+        var tablesrc = document.getElementById("onlineTable");
         var profilepic = document.createElement("img");
         profilepic.src = notPrivateList[ii].avatar;
-
         var friendCell = document.createElement("td");
         friendCell.classList.add("included");
         friendCell.setAttribute("id", ii);
@@ -128,6 +131,10 @@ async function addSteamId(){
         friendCell.insertAdjacentElement("afterbegin", profilepic);
         friendCell.appendChild(friendCellName);
         tablesrc.appendChild(friendCell);
+        if(ii % 10 == 0){
+            var friendRow = document.createElement("tr");
+            tablesrc.appendChild(friendRow);
+        }
     }
 
     let priorityList = new Array();
@@ -160,6 +167,8 @@ async function addSteamId(){
         // console.log(priorityList);
         // console.log(filterSwitch);
     });
+
+    console.log(finalArray);
 
 function displayGameList(){
     document.getElementById("steamResults").innerHTML = "";
@@ -261,6 +270,15 @@ displayGameList();
 
 function filterToggle(){
     var c = document.getElementById("FilterSwitch");
+    if(c.value == "NO"){
+        c.value = "YES";
+    } else if(c.value == "YES"){
+        c.value = "NO";
+    }
+}
+
+function onlineToggle(){
+    var c = document.getElementById("OnlineSwitch");
     if(c.value == "NO"){
         c.value = "YES";
     } else if(c.value == "YES"){

@@ -9,7 +9,9 @@
 </head>
 <body>
     <h1>Steam Friends List Game Comparer</h1>
-    <p>This requires your steamID64 (Dec) which can be easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>.</p>
+    <p>This requires your steamID64 (Dec) which can be easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>.</p><br />
+    <p>Include offline friends, must be selected before submitting<input type="checkbox" id="OnlineSwitch" value="NO" onclick="onlineToggle()"></p>
+    <p>(Warning: will potentially increase result time dramatically.)</p>
     <div id="SubmitLine">
     <label for="SteamID">Enter Steam ID</label><br />
         <input type="text" id="SteamIDButton" name="SteamIDButton">
@@ -28,8 +30,6 @@
     </div>
     <div id="onlineFriends">
         <table id="onlineTable">
-            <tr id="onlineTableRow">
-            </tr>
         </table>
     </div>
     <div id="PrioritySelection">
