@@ -11,8 +11,6 @@ async function addSteamId(){
     const response = await fetch(server_url);
     const json = await response.json();
 
-    console.log(json);
-
     // Pushing the first list of games from the original user so it is the first index in the array
     combinedArray.push(json.response.games);
 
@@ -20,8 +18,6 @@ async function addSteamId(){
     const friend_url = `/friendListApi/${steamId}`;
     const friendResponse = await fetch(friend_url);
     const friendData = await friendResponse.json();
-
-    console.log(friendData);
 
     let friendSteamId = new Array();
 
@@ -37,12 +33,8 @@ async function addSteamId(){
     const onlineResponse = await fetch(online_url);
     const onlineData = await onlineResponse.json();
 
-    console.log(onlineData);
-
     // let onlineStatus = new Array();
     let onlineNameId = new Array();
-
-    // console.log(onlineData);
 
     orpl = onlineData.response.players.length;
 
@@ -58,8 +50,6 @@ async function addSteamId(){
        return y.friendname.localeCompare(z.friendname);
     });
 
-    console.log(onlineNameId);
-
     var notPrivateList = new Array();
 
     ol = onlineNameId.length;
@@ -70,8 +60,6 @@ async function addSteamId(){
         const onlineGames_response = await fetch(onlineGames_url);
         const friendGamesData = await onlineGames_response.json();
 
-        console.log(friendGamesData);
-
         // Skips any steam id that is set to private which will not allow for retrieval of owned games
         if(friendGamesData.response.games != null){
             // Adding these new games lists to the original games list to make a single array of all responses
@@ -79,12 +67,6 @@ async function addSteamId(){
             notPrivateList.push(onlineNameId[y]);
         };
     }
-
-    console.log(notPrivateList);
-
-    // notPrivateList.sort(function (a, b) {
-    //     return a.friendname.localeCompare(b.friendname);
-    // });
 
     // This adds a index[0] placeholder for one of the last steps of displaying which friends own the games
     notPrivateList.unshift({friendid: '12345678945612547', friendname: "The Original User"})
@@ -130,13 +112,9 @@ async function addSteamId(){
     //     }
     // }
 
-        // console.log(combinedArray[0]);
-
     document.getElementById("onlineTableRow").innerHTML = "";
 
     pl = notPrivateList.length;
-
-    console.log(notPrivateList);
 
     for(ii = 1; ii < pl; ii++){
         var tablesrc = document.getElementById("onlineTableRow");
@@ -158,8 +136,8 @@ async function addSteamId(){
 
     document.addEventListener('click', function(e){
         if(e.target.className=="included"){
-            console.log(e.target.textContent);
-            if(priorityList)
+            // console.log(e.target.textContent);
+            filterSwitch = document.getElementById("FilterSwitch").value;
             if(priorityList.indexOf(e.target.textContent) == -1){
                 priorityList.push(e.target.textContent);
                 priorityList.sort(function(a, b){
@@ -167,23 +145,26 @@ async function addSteamId(){
                 });
             } else {
                 var prioIndex = priorityList.indexOf(e.target.textContent);
-                priorityList.splice(prioIndex, 1);
+                priorityList.splice(prioIndex, 1);}
+        } else if(e.target.className=="filter"){
+            filterSwitch = document.getElementById("FilterSwitch").value;
+            // console.log(filterSwitch);
         }
-        if(priorityList.length > 0){
-            document.getElementById("PriorityList").innerHTML = "You are filtering results for " + priorityList.join(", ") + ".";
+        if(priorityList.length > 0 && filterSwitch == "YES"){
+            document.getElementById("PriorityList").innerHTML = "You are strictly filtering results for " + priorityList.join(", ") + ".";
+        } else if(priorityList.length > 0 && filterSwitch == "NO"){
+            document.getElementById("PriorityList").innerHTML = "You are prioritizing results for " + priorityList.join(", ") + ".";
         } else {
             document.getElementById("PriorityList").innerHTML = "Click on your friend's name if you choose to filter results.";
         }
-        console.log(priorityList);
-    }});
-
-
-    console.log(finalArray);
-
+        // console.log(priorityList);
+        // console.log(filterSwitch);
+    });
 
 function displayGameList(){
     document.getElementById("steamResults").innerHTML = "";
     gameNumber = 0;
+    filterSwitch = document.getElementById("FilterSwitch").value;
     for(p = 0; p < resultAmt ; p++){
         if(finalArray[p].occurrences > 1 && finalArray[p].occurrences != null){
             var friendText = new Array();
@@ -202,11 +183,19 @@ function displayGameList(){
                     return array1.includes(element);
                 });
             }
-            // if(priorityList > 0 && onlyFilter == true){
-
-            // }
-            if(priorityList.length > 0) {
-                console.log(isSubset(friendText, priorityList));
+            // console.log(priorityList);
+            // console.log(filterSwitch);
+            if(priorityList.length > 0 && filterSwitch == "YES"){
+                // console.log(isSubset(friendText, priorityList));
+                if(isSubset(friendText, priorityList) == true){
+                    gameMatch = true;
+                    friendText = []; 
+                    friendText = priorityList;
+                } else {
+                    gameMatch = false;
+                }
+            } else if(priorityList.length > 0 && filterSwitch == "NO") {
+                // console.log(isSubset(friendText, priorityList));
                 if(isSubset(friendText, priorityList) == true){
                     gameMatch = true;
                 } else {
@@ -225,22 +214,20 @@ function displayGameList(){
                 var src = document.getElementById("steamResults");
                 
                 var resultPara = document.createElement("p");
-                var resultName = document.createTextNode("(" + (finalArray[p].occurrences - 1)+ ") " + friendText.join(", ") + "." + " Game Number: " + (gameNumber));
+                var resultName = document.createTextNode("(" + (friendText.length)+ ") " + friendText.join(", ") + "." + " Game Number: " + (gameNumber));
                 resultPara.insertAdjacentElement("afterbegin", img);
                 resultPara.appendChild(resultName);
                 src.appendChild(resultPara);
             } else {
                 gameMatch = false;
                 resultAmt = resultAmt + 1;
-                console.log(resultAmt);
             }
         } else {
             break;
         }
     }
 }
-  
-  
+
 tenButton = document.getElementsByName("TenButton")[0];
 tenButton.addEventListener("click", function(){
 resultAmt = Number(tenButton.value);
@@ -270,5 +257,13 @@ allButton.addEventListener("click", function(){
 resultAmt = Number(finalArray.length);
 displayGameList();
 });
+}
 
+function filterToggle(){
+    var c = document.getElementById("FilterSwitch");
+    if(c.value == "NO"){
+        c.value = "YES";
+    } else if(c.value == "YES"){
+        c.value = "NO";
+    }
 }
