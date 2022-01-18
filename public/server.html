@@ -8,34 +8,44 @@
     <link rel="stylesheet" href="server.css">
 </head>
 <body>
-    <h1>Steam Friends List Game Comparer</h1>
-    <p>This requires your steamID64 (Dec) which can be easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>.</p><br />
-    <p>Include offline friends, must be selected before submitting<input type="checkbox" id="OnlineSwitch" value="NO" onclick="onlineToggle()"></p>
-    <p>(Warning: will potentially increase result time dramatically.)</p>
-    <div id="SubmitLine">
-    <label for="SteamID">Enter Steam ID</label><br />
-        <input type="text" id="SteamIDButton" name="SteamIDButton">
-        <button type="button" onclick="addSteamId()">Submit</button>
-        <label class="switch">
-            <input type="checkbox" id="FilterSwitch" class="filter" value="NO" onclick="filterToggle()">Strict Filter</input>
-            <span class="slider round"></span>
-          </label>          
+    <div class="page">
+        <div>
+            <div>
+                <div style="justify-content:center; margin:auto" >
+                    <h1><b>Steam With Your Friend</b></h1>
+                    <p>This requires your steamID64 (Dec) which can be easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>.</p>
+                    <p>Include offline friends, must be selected before submitting<input type="checkbox" id="OnlineSwitch" value="NO" onclick="onlineToggle()"></p>
+                    <p>(Warning: will potentially increase result time dramatically.)</p>
+                </div>
+                <div id="SubmitLine" style="margin:auto; padding:5px">
+                    <label for="SteamID">Enter SteamID64 (Dec)</label>
+                    <input type="text" id="SteamIDButton" name="SteamIDButton">
+                    <button type="button" onclick="addSteamId()">Submit</button>
+                    <label class="switch">
+                        <input type="checkbox" id="FilterSwitch" class="filter" value="NO" onclick="filterToggle()">Strict Filter</input>
+                        <span class="slider round"></span>
+                    </label>          
+                </div>
+                <div id="ResultSelection">
+                    <button id="ResultButtons" name="TenButton" value=10>10</button>
+                    <button id="ResultButtons" name="TwentyFiveButton" value=25>25</button>
+                    <button id="ResultButtons" name="FiftyButton" value=50>50</button>
+                    <button id="ResultButtons" name="OneHundredButton" value=100>100</button>
+                    <button id="ResultButtons" name="AllButton">All</button>
+                </div>
+            </div>
+            <div>
+            <p name="PriorityList"></p>
+            </div>
+            <div id="onlineFriends" class="online-friend-container">
+            </div>
+            <div>
+            <p name="PriorityList"></p>
+            </div>
+            <div id="steamResults" class="result-list-container">
+            </div>
+        </div>
     </div>
-    <div id="ResultSelection">
-        <button id="ResultButtons" name="TenButton" value=10>10</button>
-        <button id="ResultButtons" name="TwentyFiveButton" value=25>25</button>
-        <button id="ResultButtons" name="FiftyButton" value=50>50</button>
-        <button id="ResultButtons" name="OneHundredButton" value=100>100</button>
-        <button id="ResultButtons" name="AllButton">All</button>
-    </div>
-    <div id="onlineFriends">
-        <table id="onlineTable">
-        </table>
-    </div>
-    <div id="PrioritySelection">
-        <p id="PriorityList"></p>
-    </div>
-    <div id="steamResults" class="resultsList"></div>
     <script src='project.js'></script>    
 </body>
 </html>

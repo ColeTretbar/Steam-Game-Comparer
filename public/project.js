@@ -116,53 +116,68 @@ async function addSteamId(){
     //     }
     // }
 
-    document.getElementById("onlineTable").innerHTML = "";
+    document.getElementById("onlineFriends").innerHTML = "";
 
     pl = notPrivateList.length;
 
     for(ii = 1; ii < pl; ii++){
-        var tablesrc = document.getElementById("onlineTable");
+        var tablesrc = document.getElementById("onlineFriends");
         var profilepic = document.createElement("img");
         profilepic.src = notPrivateList[ii].avatar;
-        var friendCell = document.createElement("td");
-        friendCell.classList.add("included");
+        var friendCell = document.createElement("div");
+        var friendPara = document.createElement("p");
+        friendCell.classList.add("FriendResultCell");
         friendCell.setAttribute("id", ii);
+        friendCell.setAttribute("onclick", true);
+        friendPara.setAttribute("value", notPrivateList[ii].friendname);
+        profilepic.setAttribute("value", notPrivateList[ii].friendname);
+        friendPara.classList.add("included");
+        profilepic.classList.add("included");
         var friendCellName = document.createTextNode(notPrivateList[ii].friendname);
-        friendCell.insertAdjacentElement("afterbegin", profilepic);
-        friendCell.appendChild(friendCellName);
+        friendCell.insertAdjacentElement("afterbegin", friendPara);
+        friendPara.insertAdjacentElement("beforebegin", profilepic)
+        friendPara.appendChild(friendCellName);
         tablesrc.appendChild(friendCell);
-        if(ii % 10 == 0){
-            var friendRow = document.createElement("tr");
-            tablesrc.appendChild(friendRow);
-        }
+        // if(ii % 7 == 0){
+        //    var friendRow = document.createElement("tr");
+        //    tablesrc.appendChild(friendRow);
+        // }
     }
 
     let priorityList = new Array();
 
-    document.getElementById("PriorityList").innerHTML = ("Click on your friend's names if you choose to filter results.");
+    document.getElementsByName("PriorityList")[0].innerHTML = "Click on your friend's names if you choose to filter results.";
+    document.getElementsByName("PriorityList")[1].innerHTML = "Click on your friend's names if you choose to filter results.";
 
     document.addEventListener('click', function(e){
         if(e.target.className=="included"){
+            console.log(e.target.attributes.value.nodeValue);
             // console.log(e.target.textContent);
             filterSwitch = document.getElementById("FilterSwitch").value;
-            if(priorityList.indexOf(e.target.textContent) == -1){
-                priorityList.push(e.target.textContent);
+            if(priorityList.indexOf(e.target.attributes.value.nodeValue) == -1){
+                priorityList.push(e.target.attributes.value.nodeValue);
                 priorityList.sort(function(a, b){
                    return a.localeCompare(b);
                 });
             } else {
-                var prioIndex = priorityList.indexOf(e.target.textContent);
+                var prioIndex = priorityList.indexOf(e.target.attributes.value.nodeValue);
                 priorityList.splice(prioIndex, 1);}
         } else if(e.target.className=="filter"){
             filterSwitch = document.getElementById("FilterSwitch").value;
             // console.log(filterSwitch);
         }
         if(priorityList.length > 0 && filterSwitch == "YES"){
-            document.getElementById("PriorityList").innerHTML = "You are strictly filtering results for " + priorityList.join(", ") + ".";
+            document.getElementsByName("PriorityList")[0].innerHTML = "You are strictly filtering results for " + priorityList.join(", ") + ".";
+            document.getElementsByName("PriorityList")[1].innerHTML = "You are strictly filtering results for " + priorityList.join(", ") + ".";
+
         } else if(priorityList.length > 0 && filterSwitch == "NO"){
-            document.getElementById("PriorityList").innerHTML = "You are prioritizing results for " + priorityList.join(", ") + ".";
+            document.getElementsByName("PriorityList")[0].innerHTML = "You are prioritizing results for " + priorityList.join(", ") + ".";
+            document.getElementsByName("PriorityList")[1].innerHTML = "You are prioritizing results for " + priorityList.join(", ") + ".";
+
         } else {
-            document.getElementById("PriorityList").innerHTML = "Click on your friend's name if you choose to filter results.";
+            document.getElementsByName("PriorityList")[0].innerHTML = "Click on your friend's names if you choose to filter results.";
+            document.getElementsByName("PriorityList")[1].innerHTML = "Click on your friend's names if you choose to filter results.";
+
         }
         // console.log(priorityList);
         // console.log(filterSwitch);
@@ -220,13 +235,14 @@ function displayGameList(){
                 var logoUrl = finalArray[p].img_logo_url;
                 var img = document.createElement("img");
                 img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
-                var src = document.getElementById("steamResults");
-                
+                var src = document.getElementById("steamResults"); 
+                var resultDiv = document.createElement("div");
                 var resultPara = document.createElement("p");
                 var resultName = document.createTextNode("(" + (friendText.length)+ ") " + friendText.join(", ") + "." + " Game Number: " + (gameNumber));
-                resultPara.insertAdjacentElement("afterbegin", img);
+                resultDiv.insertAdjacentElement("afterbegin", resultPara);
+                resultPara.insertAdjacentElement("beforebegin", img);
                 resultPara.appendChild(resultName);
-                src.appendChild(resultPara);
+                src.appendChild(resultDiv);
             } else {
                 gameMatch = false;
                 resultAmt = resultAmt + 1;
