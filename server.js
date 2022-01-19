@@ -6,7 +6,7 @@ require('dotenv').config();
 const port = 8080;
 const app = express();
 app.listen(port, () => console.log(`Listening at ${port}`));
-app.use(express.static('public', {index: 'server.html'}));
+app.use(express.static('public', {index: 'index.html'}));
 
 
 const apiKey = process.env.API_KEY;
