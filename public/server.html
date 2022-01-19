@@ -11,35 +11,54 @@
     <div class="page">
         <div>
             <div>
-                <div style="justify-content:center; margin:auto" >
-                    <h1><b>Steam With Your Friend</b></h1>
-                    <p>This requires your steamID64 (Dec) which can be easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>.</p>
-                    <p>Include offline friends, must be selected before submitting<input type="checkbox" id="OnlineSwitch" value="NO" onclick="onlineToggle()"></p>
-                    <p>(Warning: will potentially increase result time dramatically.)</p>
+                <div>
+                    <h1 style="font-size: 50px;"><b>Steam With Your Friends</b></h1>
                 </div>
-                <div id="SubmitLine" style="margin:auto; padding:5px">
-                    <label for="SteamID">Enter SteamID64 (Dec)</label>
-                    <input type="text" id="SteamIDButton" name="SteamIDButton">
-                    <button type="button" onclick="addSteamId()">Submit</button>
-                    <label class="switch">
-                        <input type="checkbox" id="FilterSwitch" class="filter" value="NO" onclick="filterToggle()">Strict Filter</input>
-                        <span class="slider round"></span>
-                    </label>          
-                </div>
-                <div id="ResultSelection">
-                    <button id="ResultButtons" name="TenButton" value=10>10</button>
-                    <button id="ResultButtons" name="TwentyFiveButton" value=25>25</button>
-                    <button id="ResultButtons" name="FiftyButton" value=50>50</button>
-                    <button id="ResultButtons" name="OneHundredButton" value=100>100</button>
-                    <button id="ResultButtons" name="AllButton">All</button>
+                <div class="top-square-container" id="anchor"> 
+                    <div class="top-square-left"> 
+                        <div style="font-size: 22px;">
+                            <p>This requires your steamID64 (Dec) which can be
+                                easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>. This can also be found
+                                in the upper left corner of your Steam Profile page by
+                                enabling web addresses in Steam > Settings > Interface.
+                                Use ID 76561198012626648 for a quick example.
+                            </p>                
+                        </div>
+                        <div style="margin: 10px 0px 10px 0px;">
+                            <h2 style="margin-bottom: 5px">
+                                <b>Enter SteamID64 (Dec)</b>
+                            </h2>
+                        </div>
+                        <div class="input-line">
+                            <input class="steam-id-input" type="text" id="SteamIDButton" name="SteamIDButton">
+                            <button class="steam-id-submit" type="button" onclick="addSteamId()">Submit</button>
+                            <label class="switch">
+                                <input type="checkbox" id="OnlineSwitch" class="filter" value="NO" onclick="onlineToggle()">
+                                <span class="slider round"></span>
+                            </label> 
+                            <pre style="font-size: 15px; font-family: Arial, Helvetica, sans-serif;">     Include Offline Friends<br>(Results = Slower)  </pre>
+                        </div>
+                        <div id="ResultSelection">
+                            <button id="ResultButtons" name="TenButton" value=10>10</button>
+                            <button id="ResultButtons" name="TwentyFiveButton" value=25>25</button>
+                            <button id="ResultButtons" name="FiftyButton" value=50>50</button>
+                            <button id="ResultButtons" name="OneHundredButton" value=100>100</button>
+                            <button id="ResultButtons" name="AllButton">All</button>
+                            <label class="switch">
+                                <input type="checkbox" id="FilterSwitch" class="filter" value="NO" onclick="filterToggle()">
+                                <span class="slider round"></span>
+                            </label>     
+                            <pre style="font-size: 15px; font-family: Arial, Helvetica, sans-serif;">  Strict<br>  Filter</pre>  
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
+            <div class="priority-list">
             <p name="PriorityList"></p>
             </div>
             <div id="onlineFriends" class="online-friend-container">
             </div>
-            <div>
+            <div class="priority-list">
             <p name="PriorityList"></p>
             </div>
             <div id="steamResults" class="result-list-container">

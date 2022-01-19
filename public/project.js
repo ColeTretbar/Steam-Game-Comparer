@@ -1,6 +1,11 @@
 // Takes user's steam id and sends to server
 async function addSteamId(){
 
+    // console.log(document.getElementById("thisdoesnotexist"));
+    if(document.getElementById("first-user-display") != null){
+        remove(document.getElementById("first-user-display"));
+    }
+
     let finalArray = new Array();
     let combinedArray = new Array();
 
@@ -27,6 +32,12 @@ async function addSteamId(){
     for(i = 0; i < fffl; i++){
         friendSteamId.push(friendData.friendslist.friends[i].steamid);
     }
+
+    const firstUserInfo = `/isOnlineApi/${steamId}`;
+    const firstUserResponse = await fetch(firstUserInfo);
+    const firstUserData = await firstUserResponse.json();
+
+    console.log(firstUserData);
 
     // Using the friend list steam id list to request who is currently online
     const online_url = `/isOnlineApi/${friendSteamId}`;
@@ -73,7 +84,27 @@ async function addSteamId(){
     }
 
     // This adds a index[0] placeholder for one of the last steps of displaying which friends own the games
-    notPrivateList.unshift({friendid: '12345678945612547', friendname: "The Original User"})
+    notPrivateList.unshift({friendid: firstUserData.response.players[0].steamid, friendname: firstUserData.response.players[0].personaname, avatar: firstUserData.response.players[0].avatarfull});
+
+    if(document.getElementById("first-user-display") == null){
+        var anchor = document.getElementById("anchor");
+        var displayDiv = document.createElement("div");
+        var displayImg = document.createElement("img");
+        var displayParaOne = document.createElement("p");
+        var displayParaTwo = document.createElement("p");
+        displayDiv.classList.add("top-square-right");
+        displayDiv.setAttribute("id", "first-user-display");
+        displayParaOne.appendChild(document.createTextNode("Showing Results for"));
+        displayImg.src = firstUserData.response.players[0].avatarfull;
+        displayParaTwo.appendChild(document.createTextNode(firstUserData.response.players[0].personaname));
+        displayDiv.insertAdjacentElement("beforeend", displayParaOne);
+        displayDiv.insertAdjacentElement("beforeend", displayImg);
+        displayDiv.insertAdjacentElement("beforeend", displayParaTwo);
+        anchor.appendChild(displayDiv);
+    };
+
+
+
 
     // This checks all arrays for occurrences of steam appids amongst all of the arrays
     // creates an occurrence for the original and all others for each unique appid

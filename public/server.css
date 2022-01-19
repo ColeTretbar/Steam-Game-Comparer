@@ -1,5 +1,5 @@
 html {
-    background: linear-gradient(#283b53, #1c3049) no-repeat center center fixed;
+    background: linear-gradient(to bottom,#1c3049, #3e536d) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -21,8 +21,179 @@ body {
 .page {
     display: flex;
     justify-content: center;
-    width: 1200px;
+    max-width: 1200px;
+    width: 100%;
     margin: auto;
+    text-align: -webkit-center;
+}
+
+.page > div {
+    width: 100%;
+    justify-content: center;
+}
+
+.top-square-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.top-square-left{
+    flex-basis: 48%;   
+    border-radius: 15px;
+    background:rgba(131, 128, 128, 0.3);
+}
+
+.top-square-right{
+    font-size: 30px;
+    flex-basis: 35%;
+    border-radius: 15px;
+    background:rgba(246, 80, 2, 0.5);
+}
+
+/* unvisited link */
+a:link {
+    color: #f65002;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: #f65002;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: #f65002;
+  }
+  
+  /* selected link */
+  a:active {
+    color: rgb(246, 80, 2);
+  }
+
+.input-line {
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.input-line-left {
+    flex-basis: 40%;
+}
+
+.input-line-right {
+    flex-basis: 0;
+    flex-flow: row nowrap;
+}
+
+#ResultSelection {
+    margin-top: 10px;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#ResultButtons {
+    height: 36px;
+    width: 68px;
+    margin: 0px 10px 0px 10px;
+    border-radius: 8px;
+    border: 2px solid #f65002;
+    background-color:#1c3049;
+    color: white;
+    font-size: 15px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #f65002;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+pre {
+    margin: 0px;
+}
+
+p {
+    margin: 10px 0px 10px 0px;
+}
+
+.steam-id-input {
+    height: 34px;
+    width: 200px;
+    padding: 0px;
+    border: 0px;
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+input[type=text] {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:18px;
+    text-align:center;
+}
+
+.steam-id-submit {
+    height: 34px;
+    width: 60px;
+    border-radius: 4px;
+    border:2px solid rgb(246, 80, 2);
+    margin-right: 10px;
 }
 
 .online-friend-container {
@@ -33,6 +204,7 @@ body {
     font-size: 13px;
     border-radius: 15px;
     background:rgba(131, 128, 128, 0.3);
+    justify-content: space-evenly;
 }
 
 .online-friend-container > div {
@@ -40,12 +212,16 @@ body {
     height: 95px;
     margin-top: 20px;
     margin-bottom: 5px;
-    flex: 10%;
+    flex-basis: 10%;
 }
 
 
 .included {
     margin: 0px;
+}
+
+.priority-list {
+    margin: 15px 0px 15px 0px;
 }
 
 .result-list-container {
