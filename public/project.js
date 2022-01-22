@@ -4,21 +4,33 @@ async function addSteamId(){
     document.getElementsByName("PriorityList")[0].innerHTML = "";
     document.getElementsByName("PriorityList")[1].innerHTML = "";
     document.getElementById("onlineFriends").innerHTML = "";
-
+    
+    
+    let steamId = document.getElementById('SteamIDButton').value,
+    combinedArray = [],
+    friendSteamId = [],
+    onlineNameId = [],
+    notPrivateList = [],
+    priorityList = [],
+    resultAmt;
+    
+    document.getElementById("SteamIDSubmit").disabled = true;
+    
     if(document.getElementById("first-user-display") != null){
         let oldUser = document.getElementById("first-user-display");
         oldUser.remove();
+        let anchor = document.getElementById("anchor")
+        let loader = document.createElement("div");
+        loader.className = "loader";
+        loader.setAttribute("id", "loader");
+        anchor.insertAdjacentElement("beforeend", loader);
+    } else if(document.getElementById("first-user-display") == null){
+        anchor = document.getElementById("anchor")
+        let loader = document.createElement("div");
+        loader.className = "loader";
+        loader.setAttribute("id", "loader");
+        anchor.insertAdjacentElement("beforeend", loader);
     }
-
-    let steamId = document.getElementById('SteamIDButton').value;
-
-    let resultAmt;
-
-    let combinedArray = [],
-        friendSteamId = [],
-        onlineNameId = [],
-        notPrivateList = [],
-        priorityList = [];
 
     // This is the original user's steam id going to the server to request the steam api
     const server_url = `/firstUserGameApi/${steamId}`;
@@ -80,14 +92,12 @@ async function addSteamId(){
         };
     }
 
-    
-
-
-    
     // This adds a index[0] placeholder for one of the last steps of displaying which friends own the games
     notPrivateList.unshift({friendid: firstUserData.response.players[0].steamid, friendname: firstUserData.response.players[0].personaname, avatar: firstUserData.response.players[0].avatarfull});
     
     if(document.getElementById("first-user-display") == null){
+        let loader = document.getElementById("loader");
+        loader.remove();
         let anchor = document.getElementById("anchor"),
             displayDiv = document.createElement("div"),
             displayImg = document.createElement("img"),
@@ -146,6 +156,7 @@ async function addSteamId(){
         if((ii + 1) == pl){
             document.getElementsByName("PriorityList")[0].innerHTML = "Click on your friend's names if you choose to filter results.";
             document.getElementsByName("PriorityList")[1].innerHTML = "Click on your friend's names if you choose to filter results.";
+            document.getElementById("SteamIDSubmit").disabled = false;
         };
     };
         
