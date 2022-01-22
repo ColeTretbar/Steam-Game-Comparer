@@ -207,12 +207,13 @@ input[type=text] {
     justify-content: space-evenly;
 }
 
-.online-friend-container > div {
+.FriendResultCell {
     width: 115px;
     height: 95px;
-    margin-top: 20px;
+    padding-top: 20px;
     margin-bottom: 5px;
     flex-basis: 10%;
+    border-radius: 8px;
 }
 
 
