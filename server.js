@@ -13,7 +13,7 @@ const apiKey = process.env.API_KEY;
 const apiSteam = `https://api.steampowered.com`;
 const apiPlayerOwned = `/IPlayerService/GetOwnedGames/v0001/?key=`;
 const idTag = `&steamid=`;
-const appInfoTag = `&include_appinfo=true`;
+const appInfoTag = `&include_appinfo=true&include_played_free_games=true&include_free_sub=true&skip_unvetted_apps=false`;
 const apiUserFriends = `/ISteamUser/GetFriendList/v0001/?key=`;
 const appRelationTag = `&relationship=friend`;
 const apiUserSummary = `/ISteamUser/GetPlayerSummaries/v0002/?key=`;
@@ -44,8 +44,8 @@ app.get('/isOnlineApi/:friendSteamId', async (request, response) => {
 })
 
 // Requests Steam API for the owned games of the Steam IDs that were shown to be online
-app.get('/onlineGamesApi/:onlineStatus', async (request, response) => {
-    const onlineStatus = request.params.onlineStatus;
+app.get('/onlineGamesApi/:onlineNameId[y].friendid', async (request, response) => {
+    const onlineStatus = request.params.onlineNameId[y].friendid;
     const onlineGames_response = await fetch(apiSteam + apiPlayerOwned + apiKey + idTag + onlineStatus + appInfoTag);
     const onlineUserGames = await onlineGames_response.json();
     response.json(onlineUserGames);

@@ -5,14 +5,14 @@ async function addSteamId(){
     document.getElementsByName("PriorityList")[1].innerHTML = "";
     document.getElementById("onlineFriends").innerHTML = "";
     
-    
     let steamId = document.getElementById('SteamIDButton').value,
     combinedArray = [],
     friendSteamId = [],
     onlineNameId = [],
     notPrivateList = [],
     priorityList = [],
-    resultAmt;
+    resultAmt = 0,
+    ignoreList = [737010, 770720, 205790, 700580, 623990, 858460, 367540, 427460, 545100, 234740, 931180, 774941, 362300, 439700, 232150, 1083500];
     
     document.getElementById("SteamIDSubmit").disabled = true;
     
@@ -36,7 +36,7 @@ async function addSteamId(){
     const server_url = `/firstUserGameApi/${steamId}`;
     const response = await fetch(server_url);
     const json = await response.json();
-    
+
     // Pushing the first list of games from the original user so it is the first index in the array
     combinedArray.push(json.response.games);
     
@@ -61,9 +61,9 @@ async function addSteamId(){
     const onlineResponse = await fetch(online_url);
     const onlineData = await onlineResponse.json();
     
-    var orpl = onlineData.response.players.length;
+    let orpl = onlineData.response.players.length;
     
-    var includeOnline = document.getElementById("OnlineSwitch").value;
+    let includeOnline = document.getElementById("OnlineSwitch").value;
     
     // This checks for which steam ids are currently online
     for(x = 0; x < orpl; x++){
@@ -76,14 +76,13 @@ async function addSteamId(){
     
     onlineNameId.sort((y, z) => y.friendname.localeCompare(z.friendname))
     
-    var ol = onlineNameId.length;
+    let ol = onlineNameId.length;
     
     // Loop that is getting the game list of each online steam id
     for(y = 0; y < ol; y++){
         const onlineGames_url = `/onlineGamesApi/${onlineNameId[y].friendid}`;
         const onlineGames_response = await fetch(onlineGames_url);
         const friendGamesData = await onlineGames_response.json();
-        console.log(friendGamesData);
         // Skips any steam id that is set to private which will not allow for retrieval of owned games
         if(friendGamesData.response.games != null){
             // Adding these new games lists to the original games list to make a single array of all responses
@@ -133,7 +132,7 @@ async function addSteamId(){
     // Sorts the occurrences from greatest to least
     finalArray = combinedArray[0].sort((x, y) => y.occurrences - x.occurrences || x.name.localeCompare(y.name));
 
-    var pl = notPrivateList.length;
+    let pl = notPrivateList.length;
 
     for(ii = 1; ii < pl; ii++){
         let tablesrc = document.getElementById("onlineFriends"),
@@ -177,7 +176,6 @@ async function addSteamId(){
         } else if(e.target.className=="filter"){
                 filterSwitch = document.getElementById("FilterSwitch").value;
         }
-
         if(e.target.className=="included" || e.target.className=="filter"){
             if(priorityList.length > 0 && filterSwitch == "YES"){
                 document.getElementsByName("PriorityList")[0].innerHTML = "You are strictly filtering results for " + priorityList.join(", ") + ".";
@@ -201,23 +199,12 @@ async function addSteamId(){
         }
     });
     
-    console.log(priorityList);
-
-    console.log(notPrivateList);
-
-    console.log(combinedArray);
-
-    console.log(finalArray);
-
-    document.getElementById("steamResults").innerHTML = "";
-    
     function displayGameList(){
         document.getElementById("steamResults").innerHTML = "";
         let gameNumber = 0;
         filterSwitch = document.getElementById("FilterSwitch").value;
         let gameMatch = false;
         let selectedResultAmt = resultAmt;
-        console.log({resultAmt});
         for(p = 0; p < resultAmt ; p++){
             if(finalArray[p].occurrences > 1 && finalArray[p].occurrences != null){
                 let friendText = [];
@@ -255,42 +242,45 @@ async function addSteamId(){
                 }
                     
                 if(gameMatch ==  true){
-                    gameNumber += 1;
                     let logoAppid = finalArray[p].appid,
-                        logoUrl = finalArray[p].img_logo_url,
-                        img = document.createElement("img"),
-                        src = document.getElementById("steamResults"), 
-                        resultDiv = document.createElement("div"),
-                        resultPara = document.createElement("p"),
-                        resultGame = document.createElement("p"),
-                        resultName = document.createTextNode("(" + (friendText.length)+ ") " + friendText.join(", ") + "." + "Game Number: " + (gameNumber));
+                    logoUrl = finalArray[p].img_logo_url,
+                    img = document.createElement("img"),
+                    src = document.getElementById("steamResults"), 
+                    resultDiv = document.createElement("div"),
+                    resultPara = document.createElement("p"),
+                    resultGame = document.createElement("p");
+                    console.log(logoAppid);
+
+                    if(ignoreList.indexOf(logoAppid) > -1){
+                        console.log("Skipped Over: " + finalArray[p].name);
+                        resultAmt += 1;
+                        continue;
+                    }
+
+                    gameNumber += 1;
+                    resultPara.innerHTML = "(" + (friendText.length)+ ") " + friendText.join(", ") + "." + "<br/>" + "<br/>" + "Game Number: " + (gameNumber);
                     img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
                     resultGame.appendChild(document.createTextNode(finalArray[p].name));
-                    resultPara.appendChild(resultName);
                     resultDiv.insertAdjacentElement("beforeend", img);
                     resultDiv.insertAdjacentElement("beforeend", resultGame);
                     resultDiv.insertAdjacentElement("beforeend", resultPara);
                     src.appendChild(resultDiv);
                 } else {
                     gameMatch = false;
-                    resultAmt = resultAmt + 1;
+                    resultAmt += 1;
                 }
             } else {
                 resultAmt = selectedResultAmt;
-                console.log(resultAmt)
                 break;
             }
         }
         resultAmt = selectedResultAmt;
-        console.log(resultAmt);
-        console.log(selectedResultAmt);
     }
 
     const tenButton = document.getElementsByName("TenButton")[0];
     tenButton.addEventListener("click", function(){
         resultAmt = Number(tenButton.value);
         displayGameList();
-        
     })
 
     const twentyFiveButton = document.getElementsByName("TwentyFiveButton")[0];
