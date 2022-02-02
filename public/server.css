@@ -4,6 +4,7 @@ html {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    font-size: 16px;
 }
 
 body {
@@ -13,7 +14,6 @@ body {
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     color: whitesmoke;
-    font-size: 20px;
     flex-wrap: wrap;
     margin: auto;
 }
@@ -32,25 +32,42 @@ body {
     justify-content: center;
 }
 
+.title-header {
+    font-size: 4rem;
+}
+
 .top-square-container {
     display: flex;
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .top-square-left{
     flex-basis: 48%;   
     border-radius: 15px;
     background:rgba(131, 128, 128, 0.3);
+    padding-bottom: 10px;
+}
+
+.info-para {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 1.5rem;
+    text-align: left;
 }
 
 .top-square-right{
-    font-size: 30px;
+    font-size: 2rem;
     flex-basis: 35%;
     border-radius: 15px;
     background:rgba(246, 80, 2, 0.5);
+    align-content: center;
+    padding-left: 8px;
+    padding-right: 8px;
+    height: 100%;
 }
 
 /* unvisited link */
@@ -74,11 +91,14 @@ a:link {
   }
 
 .input-line {
-    margin-top: 10px;
     justify-content: center;
     display: flex;
     flex-flow: row wrap;
     align-items: center;
+}
+
+.input-line > * {
+    margin-top: 5px;
 }
 
 .input-line-left {
@@ -86,23 +106,35 @@ a:link {
 }
 
 .input-line-right {
-    flex-basis: 0;
+    flex-basis: auto;
     flex-flow: row nowrap;
 }
 
 #ResultSelection {
-    margin-top: 10px;
     flex-flow: row wrap;
     justify-content: center;
     align-items: center;
     display: flex;
-    margin-bottom: 10px;
+}
+
+.steam-id-input {
+    height: 34px;
+    width: 200px;
+    padding: 0px;
+    border: 0px;
+    border-radius: 4px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.result-buttons > * {
+    margin-top: 5px;
 }
 
 #ResultButtons {
     height: 36px;
     width: 68px;
-    margin: 0px 10px 0px 10px;
+    margin: 5px 10px 0px 10px;
     border-radius: 8px;
     border: 2px solid #f65002;
     background-color:#1c3049;
@@ -170,34 +202,21 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-pre {
-    margin: 0px;
-}
-
 p {
     margin: 10px 0px 10px 0px;
 }
 
-.steam-id-input {
-    height: 34px;
-    width: 200px;
-    padding: 0px;
-    border: 0px;
-    border-radius: 4px;
-    margin-right: 20px;
-}
-
 input[type=text] {
     font-family: Arial, Helvetica, sans-serif;
-    font-size:18px;
-    text-align:center;
+    font-size: 1rem;
+    text-align: center;
 }
 
 .steam-id-submit {
     height: 34px;
     width: 60px;
     border-radius: 4px;
-    border:2px solid rgb(246, 80, 2);
+    border: 2px solid rgb(246, 80, 2);
     margin-right: 10px;
 }
 
@@ -259,7 +278,29 @@ input[type=text] {
     animation: spin 2s linear infinite;
   }
   
-  @keyframes spin {
+@keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+}
+
+.filter-text{
+    font-size: 15px; 
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 0px;
+}
+
+/* @media all and (max-width: 800px) {
+    .top-square-container {
+        flex-direction: column;
+    }
+
+    .
+} */
+
+.submit-header{
+    margin: 0px;
+}
+
+.result-selection-header{
+    margin: 10px 0px 0px 0px;
+}
