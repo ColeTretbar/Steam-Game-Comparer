@@ -30,11 +30,14 @@ steamProject = function(){
     
     // Takes user's steam id and sends to server
     async function addSteamId(){
+
+        //Removes all visual elements for the new results to move in
         document.getElementById("steamResults").innerHTML = "";
         document.getElementsByName("PriorityList")[0].innerHTML = "";
         document.getElementsByName("PriorityList")[1].innerHTML = "";
         document.getElementById("onlineFriends").innerHTML = "";
         
+        //Disables all on screen buttons while results are being fetched
         document.getElementById("SteamIDSubmit").disabled = true;
         document.getElementsByName("TenButton")[0].disabled = true;
         document.getElementsByName("TwentyFiveButton")[0].disabled = true;
@@ -44,6 +47,7 @@ steamProject = function(){
         document.getElementById("FilterSwitch").disabled = true;
         document.getElementById("OnlineSwitch").disabled = true;
 
+        //Deletes old user display image if there then adds loader and resets old data
         if(document.getElementById("first-user-display") != null){
             let oldUser = document.getElementById("first-user-display");
             oldUser.remove();
@@ -65,6 +69,7 @@ steamProject = function(){
         let steamId = document.getElementById("SteamIDButton").value;
 
         // This is the original user's steam id going to the server to request the steam api
+        // Catches error if steamID format is incorrect
         try{
             const server_url = `/firstUserGameApi/${steamId}`;
             const response = await fetch(server_url);
@@ -74,6 +79,8 @@ steamProject = function(){
             return;
         }
 
+        // Catches error if steamID was correct but profile is private
+        // which produces no games in the JSON file
         try{
             if(json.response.games == undefined ) throw "No Game Data";
         } catch(err){
@@ -96,6 +103,7 @@ steamProject = function(){
             friendSteamId.push(friendData.friendslist.friends[i].steamid);
         };
         
+        // First user's profile info 
         const firstUserInfo = `/isOnlineApi/${steamId}`;
         const firstUserResponse = await fetch(firstUserInfo);
         const firstUserData = await firstUserResponse.json();
@@ -109,7 +117,9 @@ steamProject = function(){
         
         let includeOnline = document.getElementById("OnlineSwitch").value;
         
-        // This checks for which steam ids are currently online
+        // This checks if online toggle is on(YES) or off(NO)
+        // If on(YES) all steamIDs will pass through
+        // if off(NO) only steamIDs will online state will pass through
         for(x = 0; x < orpl; x++){
             if(includeOnline =="YES"){
                 onlineNameId.push({friendid: onlineData.response.players[x].steamid, friendname: onlineData.response.players[x].personaname, avatar: onlineData.response.players[x].avatarmedium});
@@ -118,26 +128,30 @@ steamProject = function(){
             }
         }
         
+        // Sorts alphabetically for better viewing/formatting
         onlineNameId.sort((y, z) => y.friendname.localeCompare(z.friendname))
         
         let ol = onlineNameId.length;
         
-        // Loop that is getting the game list of each online steam id
+        // Loops gets each friend steamIDs that passed through previous code block
         for(y = 0; y < ol; y++){
             const onlineGames_url = `/onlineGamesApi/${onlineNameId[y].friendid}`;
             const onlineGames_response = await fetch(onlineGames_url);
             const friendGamesData = await onlineGames_response.json();
             // Skips any steam id that is set to private which will not allow for retrieval of owned games
             if(friendGamesData.response.games != null){
-                // Adding these new games lists to the original games list to make a single array of all responses
+                // Adding these new games lists to the original games list to make a single array of all appids
                 combinedArray.push(friendGamesData.response.games);
+                // Creating array with friend profile data (steamid, friendname, avatar)
+                // for display later on
                 notPrivateList.push(onlineNameId[y]);
             };
         }
 
-        // This adds a index[0] placeholder for one of the last steps of displaying which friends own the games
+        // Adding first user as index [0]
         notPrivateList.unshift({friendid: firstUserData.response.players[0].steamid, friendname: firstUserData.response.players[0].personaname, avatar: firstUserData.response.players[0].avatarfull});
         
+        // Removes spinning loader and displays first user's profile pic and name
         if(document.getElementById("first-user-display") == null){
             let loader = document.getElementById("loader");
             loader.remove();
@@ -178,6 +192,10 @@ steamProject = function(){
 
         let pl = notPrivateList.length;
 
+        // Displays all steamIDs that made it to results with the profile pic and name
+        // in individual divs and makes them clickable for filtering
+        // Also re-enables on screens buttons, at this point the program has succesfully
+        // created all appropriate arrays and json files for future manipulation
         for(ii = 1; ii < pl; ii++){
             let tablesrc = document.getElementById("onlineFriends"),
                 profilepic = document.createElement("img"),
@@ -212,8 +230,14 @@ steamProject = function(){
         }
     }
 
+    // Monitors page for click events on div class names "included" and
+    // "filter" 
     const includedFilter = document.getElementById("page-content");
     includedFilter.addEventListener("click", function(e){
+        
+        // included class checks if the target of click event is in the priorityList
+        // array. If the target isn't it is added and the array is sorted alphabetically again.
+        // If the target is already in the array, it is located and spliced out of the array.
         if(e.target.className=="included"){
             filterSwitch = document.getElementById("FilterSwitch").value;
             if(priorityList.indexOf(e.target.attributes.value.nodeValue) == -1){
@@ -230,6 +254,9 @@ steamProject = function(){
         } else if(e.target.className=="filter"){
             filterSwitch = document.getElementById("FilterSwitch").value;
         }
+
+        // Updates PriorityList text on webpage depending on filtering type and priorityList length
+        // calls displayGameList() if a resultAmt button has been pressed since the most recent Submit
         if(e.target.className=="included" || e.target.className=="filter"){
             if(priorityList.length > 0 && filterSwitch == "YES"){
                 document.getElementsByName("PriorityList")[0].innerHTML = "You are strictly filtering results for " + priorityList.join(", ") + ".";
@@ -252,7 +279,7 @@ steamProject = function(){
             }
         }
     })
-        
+    
     function displayGameList(){
         friendText = [];
         document.getElementById("steamResults").innerHTML = "";
