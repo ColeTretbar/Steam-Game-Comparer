@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="server.css">
+</head>
+<body>
+    <div class="page">
+        <div id="page-content">
+            <div>
+                <div>
+                    <h1 class="title-header">Steam With Your Friends</h1>
+                </div>
+                <div class="top-square-container" id="anchor"> 
+                    <div class="top-square-left"> 
+                        <div class="info-para">
+                            <p>This requires your steamID64 (Dec) which can be
+                                easily found at <a href="https://www.steamidfinder.com" target="_blank">SteamIDFinder</a>. This can also be found
+                                in the upper left corner of your Steam Profile page by
+                                enabling web addresses in Steam > Settings > Interface.
+                                Use ID 76561198012626648 for a quick example.
+                            </p>                
+                        </div>
+                        <div class="submit-title">
+                            <h2 class="submit-header">
+                                Enter SteamID64 (Dec)
+                            </h2>
+                        </div>
+                        <div class="input-line">
+                            <input class="steam-id-input" type="text" id="SteamIDButton" name="SteamIDButton" value="Enter SteamID64 (Dec)" 
+                            onblur="if(this.value=='')this.value='Enter SteamID64 (Dec)';" 
+                            onfocus="if(this.value=='Enter SteamID64 (Dec)' || this.value=='Private or Incorrect ID')this.value='';">
+                            <button class="steam-id-submit" type="button" id="SteamIDSubmit" onclick="steamProject.addSteamId()">Submit</button>
+                            <label class="switch">
+                                <input type="checkbox" id="OnlineSwitch" value="NO" onclick="steamProject.onlineToggle()">
+                                <span class="slider round"></span>
+                            </label> 
+                            <pre class="filter-text">     Include Offline Friends<br>(Results = Slower)  </pre>
+                        </div>
+                        <div>
+                            <h3 class="result-selection-header">Select Desired Amount of Results</h3>
+                        </div>
+                        <div class="result-buttons" id="ResultSelection">
+                            <button id="ResultButtons" name="TenButton" value=10>10</button>
+                            <button id="ResultButtons" name="TwentyFiveButton" value=25>25</button>
+                            <button id="ResultButtons" name="FiftyButton" value=50>50</button>
+                            <button id="ResultButtons" name="OneHundredButton" value=100>100</button>
+                            <button id="ResultButtons" name="AllButton">All</button>
+                            <label class="switch">
+                                <input type="checkbox" id="FilterSwitch" class="filter" value="NO" onclick="steamProject.filterToggle()">
+                                <span class="slider round"></span>
+                            </label>     
+                            <pre class="filter-text">  Strict<br>  Filter</pre>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="priority-list">
+            <p name="PriorityList"></p>
+            </div>
+            <div id="onlineFriends" class="online-friend-container">
+            </div>
+            <div class="priority-list">
+            <p name="PriorityList"></p>
+            </div>
+            <div id="steamResults" class="result-list-container">
+            </div>
+        </div>
+    </div>
+    <script src='project.js'></script>    
+</body>
+</html>

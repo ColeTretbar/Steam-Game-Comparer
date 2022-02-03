@@ -6,14 +6,14 @@ require('dotenv').config();
 const port = 8080;
 const app = express();
 app.listen(port, () => console.log(`Listening at ${port}`));
-app.use(express.static('public', {index: 'server.html'}));
+app.use(express.static('public', {index: 'index.html'}));
 
 
 const apiKey = process.env.API_KEY;
 const apiSteam = `https://api.steampowered.com`;
 const apiPlayerOwned = `/IPlayerService/GetOwnedGames/v0001/?key=`;
 const idTag = `&steamid=`;
-const appInfoTag = `&include_appinfo=true`;
+const appInfoTag = `&include_appinfo=true&include_played_free_games=true&skip_unvetted_apps=false`;
 const apiUserFriends = `/ISteamUser/GetFriendList/v0001/?key=`;
 const appRelationTag = `&relationship=friend`;
 const apiUserSummary = `/ISteamUser/GetPlayerSummaries/v0002/?key=`;
@@ -23,7 +23,7 @@ const apiUserSummary = `/ISteamUser/GetPlayerSummaries/v0002/?key=`;
 app.get('/firstUserGameApi/:steamId', async (request, response) => {
     const steamId = request.params.steamId;
     const firstUserGame_response = await fetch(apiSteam + apiPlayerOwned + apiKey + idTag + steamId + appInfoTag);
-    const firstUserGame = await firstUserGame_response.json();
+    const firstUserGame = await firstUserGame_response.json().catch((err) => { console.error(err); });
     response.json(firstUserGame);
 })
 
