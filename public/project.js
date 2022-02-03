@@ -81,25 +81,25 @@ async function addSteamId(){
         (x, y) => y.occurrences - x.occurrences ||
         x.name.localeCompare(y.name));
 
-    // A loop for displaying all of the results into the console 
-    // console.log("You have " + (finalArray[0].occurrences - 1) + " friend(s) online to play these game(s):");
-    // count = 2;
-    // for(k = 0; k < finalArray.length; k++){
-    //     b = k + 1;
-    //     if(finalArray[k].where[0] == 0){
-    //         if(finalArray[k].occurrences > 1){
-    //             if(finalArray[k].occurrences == finalArray[b].occurrences){
-    //                 console.log("       " + finalArray[k].name);
-    //             } else {
-    //                 console.log("       " + finalArray[k].name);
-    //                 if((finalArray[b].occurrences - 1) > 0){
-    //                 console.log("You have " + (finalArray[b].occurrences - 1) + " friend(s) online to play these game(s):");
-    //                 ++count;
-    //                 }
-    //             }
-    //         }    
-    //     }
-    // }
+    //  A loop for displaying all of the results into the console 
+    console.log("You have " + (finalArray[0].occurrences - 1) + " friend(s) online to play these game(s):");
+    count = 2;
+    for(k = 0; k < finalArray.length; k++){
+        b = k + 1;
+        if(finalArray[k].where[0] == 0){
+            if(finalArray[k].occurrences > 1){
+                if(finalArray[k].occurrences == finalArray[b].occurrences){
+                    console.log("       " + finalArray[k].name);
+                } else {
+                    console.log("       " + finalArray[k].name);
+                    if((finalArray[b].occurrences - 1) > 0){
+                    console.log("You have " + (finalArray[b].occurrences - 1) + " friend(s) online to play these game(s):");
+                    ++count;
+                    }
+                }
+            }    
+        }
+    }
 
     for(ii = 1; ii < notPrivateList.length ; ii++){
         var tablesrc = document.getElementById("onlineTableRow");
@@ -114,6 +114,8 @@ async function addSteamId(){
         friendCell.appendChild(friendCellName);
         tablesrc.appendChild(friendCell);
     }
+
+    console.log(finalArray);
 
     // document.addEventListener('click', function(e){
     //     if(e.target.className=="included"){
