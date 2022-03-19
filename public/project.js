@@ -81,6 +81,8 @@ steamProject = function(){
             return;
         }
 
+        console.log(json);
+
         // Pushing the first list of games from the original user so it is the first index in the array
         combinedArray.push(json.response.games);
         
@@ -210,7 +212,10 @@ steamProject = function(){
                 resultsCompleted = true;
             }
         }
+        console.log(finalArray);
     }
+
+    console.log(finalArray);
 
     const includedFilter = document.getElementById("page-content");
     includedFilter.addEventListener("click", function(e){
@@ -252,6 +257,8 @@ steamProject = function(){
             }
         }
     })
+
+    console.log(finalArray);
         
     function displayGameList(){
         friendText = [];
@@ -298,7 +305,7 @@ steamProject = function(){
                     
                 if(gameMatch ==  true){
                     let logoAppid = finalArray[p].appid,
-                    logoUrl = finalArray[p].img_logo_url,
+                    //logoUrl = finalArray[p].img_icon_url,
                     img = document.createElement("img"),
                     src = document.getElementById("steamResults"), 
                     resultDiv = document.createElement("div"),
@@ -311,8 +318,9 @@ steamProject = function(){
                     }
 
                     gameNumber += 1;
+                    resultDiv.classList.add("dropdown-list");
                     resultPara.innerHTML = "(" + (friendText.length)+ ") " + friendText.join(", ") + "." + "<br/>" + "<br/>" + "Game Number: " + (gameNumber);
-                    img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
+                    img.src = "https://cdn.akamai.steamstatic.com/steam/apps/" + logoAppid + "/header.jpg";
                     resultGame.appendChild(document.createTextNode(finalArray[p].name));
                     resultDiv.insertAdjacentElement("beforeend", img);
                     resultDiv.insertAdjacentElement("beforeend", resultGame);
@@ -404,6 +412,9 @@ steamProject = function(){
         }
         document.getElementById("SteamIDButton").value = "Private or Incorrect ID";
     }
+
+
+
     return{
         addSteamId:addSteamId,
         onlineToggle:onlineToggle,
