@@ -233,13 +233,8 @@ steamProject = function(){
         console.log(finalArray);
     }
 
-<<<<<<< HEAD
-    console.log(finalArray);
-
-=======
     // Monitors page for click events on div class names "included" and
     // "filter" 
->>>>>>> 0eab4872a3a038fc638d66a9d6ee06ceb65cdc69
     const includedFilter = document.getElementById("page-content");
     includedFilter.addEventListener("click", function(e){
         
@@ -287,13 +282,7 @@ steamProject = function(){
             }
         }
     })
-<<<<<<< HEAD
-
-    console.log(finalArray);
-        
-=======
     
->>>>>>> 0eab4872a3a038fc638d66a9d6ee06ceb65cdc69
     function displayGameList(){
         friendText = [];
         document.getElementById("steamResults").innerHTML = "";
