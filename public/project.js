@@ -5,9 +5,10 @@ steamProject = function(){
     onlineNameId = [],
     notPrivateList = [],
     priorityList = [],
+    alphabetArray = [],
     resultAmt = 0,
     // The beginning of the ignored games list/filtering feature, mainly proof of concept
-    ignoreList = [737010, 770720, 205790, 700580, 623990, 858460, 367540, 427460, 545100, 234740, 931180, 774941, 362300, 439700, 232150, 1083500, 397080, 229660],
+    ignoreList = [737010, 770720, 205790, 700580, 623990, 858460, 367540, 427460, 545100, 234740, 931180, 774941, 362300, 439700, 232150, 1083500, 397080, 229660, 1471280],
     result,
     json = [],
     friendText = [],
@@ -16,6 +17,7 @@ steamProject = function(){
     // Resets all global scope variables within steamProject when Submit is hit again
     function resetData(){
         finalArray = [];
+        alphabetArray = [];
         combinedArray = [];
         friendSteamId = [];
         onlineNameId = [];
@@ -190,6 +192,13 @@ steamProject = function(){
         // Sorts the occurrences from greatest to least
         finalArray = combinedArray[0].sort((x, y) => y.occurrences - x.occurrences || x.name.localeCompare(y.name));
 
+        alphabetArray = alphabetArray.concat(finalArray);
+
+        alphabetArray.sort((x,y) => x.name.localeCompare(y.name));
+
+        console.log(finalArray);
+        console.log(alphabetArray);
+
         let pl = notPrivateList.length;
 
         // Displays all steamIDs that made it to results with the profile pic and name
@@ -287,6 +296,84 @@ steamProject = function(){
         filterSwitch = document.getElementById("FilterSwitch").value;
         let gameMatch = false;
         let selectedResultAmt = resultAmt;
+        if(filterSwitch == "YES" && priorityList.length > 0){
+            for(p = 0; p < resultAmt; p++){
+                if(p == alphabetArray.length){
+                    break;
+                }
+                if(alphabetArray[p].occurrences != undefined){
+                    if(alphabetArray[p].occurrences <= 1 || alphabetArray[p].occurrences == undefined){
+                        resultAmt += 1;
+                        continue;
+                    } else {
+                        friendText = [];
+                    }
+    
+                    for(z = 1; z < alphabetArray[p].where.length; z++){ 
+                        friendText.push(notPrivateList[alphabetArray[p].where[z]].friendname);
+                    }
+                        
+                    friendText.sort(function(x, y){
+                        return x.localeCompare(y)
+                    })
+                        
+                    function isSubset(array1, array2){
+                        return array2.every(function(element){
+                        return array1.includes(element);
+                        });
+                    }
+    
+                    if(priorityList.length > 0 && filterSwitch == "YES"){
+                        if(isSubset(friendText, priorityList) == true){
+                            gameMatch = true;
+                            friendText = []; 
+                            friendText = priorityList;
+                        } else {
+                            gameMatch = false;
+                        }
+                    } else if(priorityList.length > 0 && filterSwitch == "NO") {
+                        if(isSubset(friendText, priorityList) == true){
+                            gameMatch = true;
+                        } else {
+                            gameMatch = false;
+                        }
+                    } else {
+                        gameMatch = true;
+                    }
+                        
+                    if(gameMatch ==  true){
+                        let logoAppid = alphabetArray[p].appid,
+                        img = document.createElement("img"),
+                        src = document.getElementById("steamResults"), 
+                        resultDiv = document.createElement("div"),
+                        resultPara = document.createElement("p"),
+                        resultGame = document.createElement("p");
+    
+                        if(ignoreList.indexOf(logoAppid) > -1){
+                            resultAmt += 1;
+                            continue;
+                        }
+    
+                        gameNumber += 1;
+                        resultPara.innerHTML = "(" + (friendText.length)+ ") " + friendText.join(", ") + "." + "<br/>" + "<br/>" + "Game Number: " + (gameNumber);
+                        img.src = "https://cdn.akamai.steamstatic.com/steam/apps/" + logoAppid + "/header.jpg";
+                        resultGame.appendChild(document.createTextNode(alphabetArray[p].name));
+                        resultDiv.insertAdjacentElement("beforeend", img);
+                        resultDiv.insertAdjacentElement("beforeend", resultGame);
+                        resultDiv.insertAdjacentElement("beforeend", resultPara);
+                        src.appendChild(resultDiv);
+                    } else {
+                        gameMatch = false;
+                        resultAmt += 1;
+                    }
+                } else {
+                    resultAmt = selectedResultAmt;
+                    break;
+                }
+            }
+            resultAmt = selectedResultAmt;
+            friendText = [];
+        } else {
         for(p = 0; p < resultAmt ; p++){
             if(finalArray[p].occurrences > 1 && finalArray[p].occurrences != null){
                 friendText = [];
@@ -325,7 +412,6 @@ steamProject = function(){
                     
                 if(gameMatch ==  true){
                     let logoAppid = finalArray[p].appid,
-                    logoUrl = finalArray[p].img_logo_url,
                     img = document.createElement("img"),
                     src = document.getElementById("steamResults"), 
                     resultDiv = document.createElement("div"),
@@ -339,7 +425,7 @@ steamProject = function(){
 
                     gameNumber += 1;
                     resultPara.innerHTML = "(" + (friendText.length)+ ") " + friendText.join(", ") + "." + "<br/>" + "<br/>" + "Game Number: " + (gameNumber);
-                    img.src = "http://media.steampowered.com/steamcommunity/public/images/apps/" + logoAppid + "/" + logoUrl + ".jpg";
+                    img.src = "https://cdn.akamai.steamstatic.com/steam/apps/" + logoAppid + "/header.jpg";
                     resultGame.appendChild(document.createTextNode(finalArray[p].name));
                     resultDiv.insertAdjacentElement("beforeend", img);
                     resultDiv.insertAdjacentElement("beforeend", resultGame);
@@ -356,7 +442,7 @@ steamProject = function(){
         }
         resultAmt = selectedResultAmt;
         friendText = [];
-    }
+    }}
 
     let enterSubmit = document.getElementById("SteamIDButton");
     enterSubmit.addEventListener("keyup", function(event){

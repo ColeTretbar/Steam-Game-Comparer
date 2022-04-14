@@ -266,6 +266,10 @@ input[type=text] {
     max-width: 184px;
     margin: 20px 15px 0px 15px;
 }
+.result-list-container > div > img {
+    width:100%;
+    height: auto;
+}
 
 .loader {
     position: relative;
