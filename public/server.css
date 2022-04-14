@@ -266,10 +266,6 @@ input[type=text] {
     max-width: 184px;
     margin: 20px 15px 0px 15px;
 }
-.result-list-container > div > img {
-    width:100%;
-    height: auto;
-}
 
 .dropdown-list > img {
     width: 100%;
