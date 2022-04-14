@@ -90,6 +90,8 @@ steamProject = function(){
             return;
         }
 
+        console.log(json);
+
         // Pushing the first list of games from the original user so it is the first index in the array
         combinedArray.push(json.response.games);
         
@@ -237,6 +239,7 @@ steamProject = function(){
                 resultsCompleted = true;
             }
         }
+        console.log(finalArray);
     }
 
     // Monitors page for click events on div class names "included" and
@@ -424,6 +427,7 @@ steamProject = function(){
                     }
 
                     gameNumber += 1;
+                    resultDiv.classList.add("dropdown-list");
                     resultPara.innerHTML = "(" + (friendText.length)+ ") " + friendText.join(", ") + "." + "<br/>" + "<br/>" + "Game Number: " + (gameNumber);
                     img.src = "https://cdn.akamai.steamstatic.com/steam/apps/" + logoAppid + "/header.jpg";
                     resultGame.appendChild(document.createTextNode(finalArray[p].name));
@@ -517,6 +521,9 @@ steamProject = function(){
         }
         document.getElementById("SteamIDButton").value = "Private or Incorrect ID";
     }
+
+
+
     return{
         addSteamId:addSteamId,
         onlineToggle:onlineToggle,
