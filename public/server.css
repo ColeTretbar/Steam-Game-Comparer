@@ -267,7 +267,7 @@ input[type=text] {
     margin: 20px 15px 0px 15px;
 }
 
-.dropdown-list > img {
+.result-list-container > div > img {
     width: 100%;
     height: auto;
 }
